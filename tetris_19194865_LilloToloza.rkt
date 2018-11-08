@@ -3,16 +3,15 @@
         (rnrs base(6))
         (rnrs io simple(6)))
 
-; Laboratorio 1 paradigmas, fecha de entrega 16 de noviembre.
-; Generar tableros, validar tableros, ejecutar partidas y evaluar partidas.
+; Laboratorio 1 paradigmas de programación, fecha de entrega 16 de noviembre.
 
+#| · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·|#
+;                                       >---- TDA Tablero ----<
 
-#| · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·|#
-;                                           >---- TDA Tablero ----<
+; >> Representación
+;   Una lista de largo N x M, la cual está llena con ceros o unos, 0 implica que esa posición no
+;   está ocupada, mientras que 1 indica que la posición si está ocupada.
 
-; - Representación
-;   Para representar el tablero se construye la matriz de NxM
-;   mediante listas de listas.
 
 ; >> Constructor
 
@@ -99,8 +98,8 @@
 
 
 
-#| · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · |#
-;                                           >---- TDA Piezas ----<
+#| · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · |#
+;                                       >---- TDA Piezas ----<
 
 ; - Representación
 ;
