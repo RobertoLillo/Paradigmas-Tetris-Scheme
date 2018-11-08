@@ -21,7 +21,7 @@
 (define (createBoardRL N M gamePieces seed)
 
   ; Función: crearListaRL
-  ; Dom: Entero X Entero
+  ; Dom: Entero
   ; Rec: Lista
   (define (crearListaRL total)
     (if (= total 1)
@@ -35,12 +35,12 @@
 
 
 ; Función: createBoardRC
-; Dom: entero, entero, entero, entero
-; Rec: Lista
+; Dom: Entero X Entero X Entero X Entero
+; Rec: Board
 (define (createBoardRC N M gamePieces seed)
   
   ; Función: crearListaRC
-  ; Entrada: entero, entero
+  ; Entrada: Entero X Entero
   ; Salida: lista
   (define (crearListaRC N M)
     (define (crearAux contador lista)
@@ -58,8 +58,8 @@
 
 
 ; Función: createBoardLazy
-; Entrada: entero, entero, entero, entero
-; Salida: lista
+; Dom: Entero X Entero X Entero X Entero
+; Rec: Board
 (define (createBoardLazy N M gamePieces seed)
   "void"
   )
