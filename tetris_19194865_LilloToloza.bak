@@ -24,14 +24,11 @@
   ; Función: crearListaRL
   ; Dom: Entero X Entero
   ; Rec: Lista
-  (define (crearListaRL total)
-    (if (= total 1)
-        (list 0)
-        (cons 0 (crearListaRL (- total 1)))
-        )
+  (define (crearListaRL N M)
+    "void"
     )
   
-  (crearListaRL (* N M))
+  "void"
   )
 
 
