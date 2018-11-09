@@ -30,29 +30,38 @@
         (cons 0 (crearListaRL (- total 1)))
         )
     )
+  
   ; Función: faltanPiezas?
   ; Dom: Board X Lista
   ; Rec: Board
   (define (faltanPiezas? board listaRandom) 
     (if (null? (cdr listaRandom))
         board
-        (faltanPiezas? (colocarPieza board (car listaRandom)) (cdr listaRandom))
+        (faltanPiezas? (colocarPieza board (cdr (crearPieza (car listaRandom))) (cdr listaRandom)))
         )
     )
 
   ; Función: colocarPieza
-  ; Dom: Board X Entero
+  ; Dom: Board X Pieza
   ; Rec: Board
-  (define (colocarPieza board numeroRandom)
-    (cons (car board)
-          (
-           )
+  (define (colocarPieza board posicionesPieza)
+    (if (null? (cdr posicionesPieza))
+        board
+        (colocarPieza (colocarPosicion board (car posicionesPieza)) (cdr posicionesPieza))
+        )
     )
+
+  ; Función: colocarPosicion
+  ; Dom: Board X Posicion
+  ; Rec: Board
+  (define (colocarPosicion board posicion)
+    "void"
+    )
+
   
   (cons (cons N M) (crearListaRL (* N M)))
   ;(colocarPiezas 123 (getListaRandom gamePieces seed 5)) ; cuantos actual maximo
   )
-
 
 ; Función: createBoardRC
 ; Dom: Entero X Entero X Entero X Entero
@@ -289,4 +298,3 @@
     (mod (myRandom xActual) maximo)
     )
   )
-  
