@@ -9,8 +9,9 @@
 ;                                       >---- TDA Tablero ----<
 
 ; >> Representación
-;   Una lista de largo N x M, la cual está llena con ceros o unos, 0 implica que esa posición no
-;   está ocupada, mientras que 1 indica que la posición si está ocupada.
+;   Una lista de largo N x M, la cual está llena con ceros o unos, cada valor dentro de la lista
+;   representa una posición del tablero, donde 0 significa que esa posición no está ocupada, mientras
+;   que 1 indica que la posición si está ocupada.
 
 
 ; >> Constructor
@@ -29,8 +30,27 @@
         (cons 0 (crearListaRL (- total 1)))
         )
     )
+  ; Función: faltanPiezas?
+  ; Dom: Board X Lista
+  ; Rec: Board
+  (define (faltanPiezas? board listaRandom) 
+    (if (null? (cdr listaRandom))
+        board
+        (faltanPiezas? (colocarPieza board (car listaRandom)) (cdr listaRandom))
+        )
+    )
+
+  ; Función: colocarPieza
+  ; Dom: Board X Entero
+  ; Rec: Board
+  (define (colocarPieza board numeroRandom)
+    (cons (car board)
+          (
+           )
+    )
   
   (cons (cons N M) (crearListaRL (* N M)))
+  ;(colocarPiezas 123 (getListaRandom gamePieces seed 5)) ; cuantos actual maximo
   )
 
 
@@ -86,18 +106,6 @@
 ; >> Operadores
 
 
-
-
-
-
-
-
-
-
-
-
-
-
 #| · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · |#
 ;                                       >---- TDA Piezas ----<
 
@@ -105,7 +113,7 @@
 ;
 ; Piezas:
 ;
-;   1) ##   2) #    3)  #    4)  ##   5)  #
+;   0) ##   1) #    2)  #    3)  ##   4)  #
 ;      ##      #       ###      ##        #
 ;              ##                         #
 ;                                         #
@@ -117,15 +125,15 @@
 ; Dom: Número
 ; Rec: Pieza
 (define (crearPieza id)
-  (if (and (integer? id) (> id 0) (< id 6))
+  (if (and (integer? id) (>= id 0) (<= id 4))
       (cond
-        [(= id 1) (list (cons 1 0) (cons 0 0) (cons 0 1) (cons 1 0) (cons 1 1))]
-        [(= id 2) (list (cons 2 0) (cons 0 0) (cons 0 1) (cons 1 0) (cons 2 0))]
-        [(= id 3) (list (cons 3 0) (cons 0 0) (cons 0 1) (cons 0 2) (cons 1 1))]
-        [(= id 4) (list (cons 4 0) (cons 0 0) (cons 0 1) (cons 1 1) (cons 1 2))]
-        [(= id 5) (list (cons 5 0) (cons 0 0) (cons 1 0) (cons 2 0) (cons 3 0))]
+        [(= id 0) (list (cons 0 0) (cons 0 0) (cons 0 1) (cons 1 0) (cons 1 1))]
+        [(= id 1) (list (cons 1 0) (cons 0 0) (cons 0 1) (cons 1 0) (cons 2 0))]
+        [(= id 2) (list (cons 2 0) (cons 0 0) (cons 0 1) (cons 0 2) (cons 1 1))]
+        [(= id 3) (list (cons 3 0) (cons 0 0) (cons 0 1) (cons 1 1) (cons 1 2))]
+        [(= id 4) (list (cons 4 0) (cons 0 0) (cons 1 0) (cons 2 0) (cons 3 0))]
         )
-      (list (cons 0 0) (cons 0 0) (cons 0 0) (cons 0 0) (cons 0 0))
+      (list (cons 0 0) (cons 0 0) (cons 0 0) (cons 0 0) (cons 0 0)) ; Error de entrada
       )
   )
 
@@ -138,8 +146,8 @@
 (define (esPieza? pieza)
   (and
    (= (length pieza) 5)
-   (> (caar pieza) 0)
-   (< (caar pieza) 5)
+   (>= (caar pieza) 0)
+   (<= (caar pieza) 4)
    )
   )
 
@@ -153,6 +161,7 @@
   (caar pieza)
   )
 
+  
 ; Función: rotaciones?
 ; Dom: Pieza
 ; Rec: Entero
@@ -160,6 +169,7 @@
   (cdar pieza)
   )
 
+  
 ; Función: getPosicion
 ; Dom: Pieza X Entero
 ; Rec: Par
@@ -180,14 +190,26 @@
 ; Rec: Pieza
 (define (rotarPieza pieza)
 
+  ; Función: rotarPieza1
+  ; Dom: Pieza
+  ; Rec: Pieza
+  (define (rotarPieza1 pieza)
+    (cond
+      [(= (rotaciones? pieza) 0) (list (cons 1 1) (cons 0 0) (cons 0 1) (cons 0 2) (cons 1 2))]
+      [(= (rotaciones? pieza) 1) (list (cons 1 2) (cons 0 1) (cons 1 1) (cons 2 0) (cons 2 1))]
+      [(= (rotaciones? pieza) 2) (list (cons 1 3) (cons 0 0) (cons 1 0) (cons 1 1) (cons 1 2))]
+      [(= (rotaciones? pieza) 3) (crearPieza 1)]
+      )
+    )
+
   ; Función: rotarPieza2
   ; Dom: Pieza
   ; Rec: Pieza
   (define (rotarPieza2 pieza)
     (cond
-      [(= (rotaciones? pieza) 0) (list (cons 2 1) (cons 0 0) (cons 0 1) (cons 0 2) (cons 1 2))]
-      [(= (rotaciones? pieza) 1) (list (cons 2 2) (cons 0 1) (cons 1 1) (cons 2 0) (cons 2 1))]
-      [(= (rotaciones? pieza) 2) (list (cons 2 3) (cons 0 0) (cons 1 0) (cons 1 1) (cons 1 2))]
+      [(= (rotaciones? pieza) 0) (list (cons 2 1) (cons 0 1) (cons 1 0) (cons 1 1) (cons 2 1))]
+      [(= (rotaciones? pieza) 1) (list (cons 2 2) (cons 0 1) (cons 1 0) (cons 1 1) (cons 1 2))]
+      [(= (rotaciones? pieza) 2) (list (cons 2 3) (cons 0 0) (cons 1 0) (cons 1 1) (cons 2 0))]
       [(= (rotaciones? pieza) 3) (crearPieza 2)]
       )
     )
@@ -197,10 +219,8 @@
   ; Rec: Pieza
   (define (rotarPieza3 pieza)
     (cond
-      [(= (rotaciones? pieza) 0) (list (cons 3 1) (cons 0 1) (cons 1 0) (cons 1 1) (cons 2 1))]
-      [(= (rotaciones? pieza) 1) (list (cons 3 2) (cons 0 1) (cons 1 0) (cons 1 1) (cons 1 2))]
-      [(= (rotaciones? pieza) 2) (list (cons 3 3) (cons 0 0) (cons 1 0) (cons 1 1) (cons 2 0))]
-      [(= (rotaciones? pieza) 3) (crearPieza 3)]
+      [(= (rotaciones? pieza) 0) (list (cons 3 1) (cons 0 1) (cons 1 0) (cons 1 1) (cons 2 0))]
+      [(= (rotaciones? pieza) 1) (crearPieza 3)]
       )
     )
 
@@ -209,27 +229,17 @@
   ; Rec: Pieza
   (define (rotarPieza4 pieza)
     (cond
-      [(= (rotaciones? pieza) 0) (list (cons 4 1) (cons 0 1) (cons 1 0) (cons 1 1) (cons 2 0))]
+      [(= (rotaciones? pieza) 0) (list (cons 4 1) (cons 0 1) (cons 0 2) (cons 0 3) (cons 0 4))]
       [(= (rotaciones? pieza) 1) (crearPieza 4)]
-      )
-    )
-
-  ; Función: rotarPieza5
-  ; Dom: Pieza
-  ; Rec: Pieza
-  (define (rotarPieza5 pieza)
-    (cond
-      [(= (rotaciones? pieza) 0) (list (cons 5 1) (cons 0 1) (cons 0 2) (cons 0 3) (cons 0 4))]
-      [(= (rotaciones? pieza) 1) (crearPieza 5)]
       )
     )
   
   (cond
-    [(= (quePieza? pieza) 1) pieza]
+    [(= (quePieza? pieza) 0) pieza]
+    [(= (quePieza? pieza) 1) (rotarPieza1 pieza)]
     [(= (quePieza? pieza) 2) (rotarPieza2 pieza)]
     [(= (quePieza? pieza) 3) (rotarPieza3 pieza)]
     [(= (quePieza? pieza) 4) (rotarPieza4 pieza)]
-    [(= (quePieza? pieza) 5) (rotarPieza5 pieza)]
     )
   )
 
@@ -237,36 +247,46 @@
 ; >> Operadores
 
 
-
-
-
-
-
-
-
-
-
-
 #| · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · |#
 
+; Generador de números aleatorios, obtenido del moodle de la asignatura,
+; modificado para que en vez de usar la función remainder, use la función mod.
+
+; Estas constantes fueron sacadas de https://en.wikipedia.org/wiki/Linear_congruential_generator
+(define a 1103515245)
+(define c 12345)
+(define m 127)
+; Esta funcion random torma un xn y obtiene el xn+1 de la secuencia de numeros aleatorios.
+(define myRandom
+  (lambda
+      (xn)
+    (mod (+ (* a xn) c) m)
+    )
+  )
+; Cada vez que pedimos un random, debemos pasar como argumento el random anterior.
 
 
+; Aca un ejemplo que permite generar una lista de numeros aleatorios.
+; Parametros:
+; * "cuantos" indica el largo de la lista a generar.
+; * "xActual" valor actual del random, se pasa en cada nivel de recursion de forma actualizada
+; * "maximo" Los numeros generados van desde 0 hasta maximo-1
+(define getListaRandom
+  (lambda (cuantos xActual maximo)
+    (if (= 0 cuantos)
+        '()
+        (let ((xNvo (myRandom xActual)))
+          (cons (mod xNvo maximo)
+                (getListaRandom (- cuantos 1) xNvo maximo)
+                )
+          )
+        )
+    )
+  )
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+(define getRandom
+  (lambda (xActual maximo)
+    (mod (myRandom xActual) maximo)
+    )
+  )
+  
