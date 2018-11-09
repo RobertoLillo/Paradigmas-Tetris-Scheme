@@ -30,7 +30,7 @@
         )
     )
   
-  (crearListaRL (* N M))
+  (cons (cons N M) (crearListaRL (* N M)))
   )
 
 
@@ -52,7 +52,7 @@
     (crearAux (* N M) '())
     )
   
-  (crearListaRC N M)
+  (cons (cons N M) (crearListaRC N M))
   )
 
 
@@ -235,4 +235,38 @@
 
 
 ; >> Operadores
+
+
+
+
+
+
+
+
+
+
+
+
+#| · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · |#
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
