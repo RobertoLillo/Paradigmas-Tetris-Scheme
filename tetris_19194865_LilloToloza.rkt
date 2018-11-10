@@ -34,28 +34,28 @@
   ; Función: faltanPiezas?
   ; Dom: Board X Lista
   ; Rec: Board
-  (define (faltanPiezas? board listaRandom) 
+  (define (faltanPiezas? listaPosiciones listaRandom) 
     (if (null? (cdr listaRandom))
-        board
-        (faltanPiezas? (colocarPieza board (cdr (crearPieza (car listaRandom))) (cdr listaRandom)))
+        listaPosiciones
+        (faltanPiezas? (colocarPieza listaPosiciones (cdr (crearPieza (car listaRandom))) (cdr listaRandom)))
         )
     )
 
   ; Función: colocarPieza
   ; Dom: Board X Pieza
   ; Rec: Board
-  (define (colocarPieza board posicionesPieza)
+  (define (colocarPieza listaPosiciones posicionesPieza)
     (if (null? (cdr posicionesPieza))
-        board
-        (colocarPieza (colocarPosicion board (car posicionesPieza)) (cdr posicionesPieza))
+        listaPosiciones
+        (colocarPieza (colocarPosicion listaPosiciones (car posicionesPieza)) (cdr posicionesPieza))
         )
     )
 
   ; Función: colocarPosicion
   ; Dom: Board X Posicion
   ; Rec: Board
-  (define (colocarPosicion board posicion)
-    "void"
+  (define (colocarPosicion listaPosiciones posicion)
+    (if ;askjdashdj
     )
 
   
