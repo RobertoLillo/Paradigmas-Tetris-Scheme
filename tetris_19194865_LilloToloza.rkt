@@ -54,9 +54,6 @@
   ; Función: colocarPosicion
   ; Dom: Board X Posicion
   ; Rec: Board
-  (define (colocarPosicion listaPosiciones posicion)
-    (if ;askjdashdj
-    )
 
   
   (cons (cons N M) (crearListaRL (* N M)))
