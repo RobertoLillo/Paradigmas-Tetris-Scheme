@@ -30,34 +30,25 @@
         (cons 0 (crearListaRL (- total 1)))
         )
     )
-  
-  ; Función: faltanPiezas?
-  ; Dom: Board X Lista
-  ; Rec: Board
-  (define (faltanPiezas? listaPosiciones listaRandom) 
-    (if (null? (cdr listaRandom))
-        listaPosiciones
-        (faltanPiezas? (colocarPieza listaPosiciones (cdr (crearPieza (car listaRandom))) (cdr listaRandom)))
+
+  ; Función: quedanPiezas?
+  ; Dom: Lista X Lista
+  ; Rec: Lista
+  (define (quedanPiezas? listaTablero listaAleatorios)
+    (if (null? listaAleatorios)
+        listaTablero
+        (quedanPiezas? (colocarPieza listaTablero (crearPieza (car listaAleatorios)) (getRandom seed 5)) (cdr listaAleatorios))
         )
+   )
+
+  ; Función: colocarPiezas
+  ; Dom: Lista X Pieza
+  ; Rec: Lista
+  (define (colocarPieza listaTablero pieza horizontal)
+    "me teni chato programa y la concchatumarejriuerui"
     )
 
-  ; Función: colocarPieza
-  ; Dom: Board X Pieza
-  ; Rec: Board
-  (define (colocarPieza listaPosiciones posicionesPieza)
-    (if (null? (cdr posicionesPieza))
-        listaPosiciones
-        (colocarPieza (colocarPosicion listaPosiciones (car posicionesPieza)) (cdr posicionesPieza))
-        )
-    )
-
-  ; Función: colocarPosicion
-  ; Dom: Board X Posicion
-  ; Rec: Board
-
-  
-  (cons (cons N M) (crearListaRL (* N M)))
-  ;(colocarPiezas 123 (getListaRandom gamePieces seed 5)) ; cuantos actual maximo
+  (list N M (crearListaRL (* N M)) 0)
   )
 
 ; Función: createBoardRC
@@ -78,7 +69,7 @@
     (crearAux (* N M) '())
     )
   
-  (cons (cons N M) (crearListaRC N M))
+  (list N M (crearListaRC (* N M)) 0)
   )
 
 
@@ -101,16 +92,14 @@
 
 ; >> Modificadores
 
-(define (play board)
-  ("void")
-  )
-
-(define (checkHorizontalLines board)
+(define (play board posHoriz piece)
   ("void")
   )
 
 ; >> Operadores
-
+(define (checkHorizontalLines board)
+  ("void")
+  )
 
 #| · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · |#
 ;                                       >---- TDA Piezas ----<
