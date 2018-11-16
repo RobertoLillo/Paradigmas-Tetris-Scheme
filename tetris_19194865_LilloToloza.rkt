@@ -11,7 +11,7 @@
 ;   que 1 indica que la posición si está ocupada.
 
 
-; >> Constructor
+; >> Constructor <<
 
 ; Función: createBoardRL
 ; Dom: Entero X Entero X Entero X Entero
@@ -69,17 +69,14 @@
   (list N M (crearListaRC N M) 0)
   )
 
-
-
 ; Función: createBoardLazy
 ; Dom: Entero X Entero X Entero X Entero
 ; Rec: Board
 (define (createBoardLazy N M gamePieces seed)
-  "NULL"
+  "No implementada aun"
   )
 
-
-; >> Funciones de pertenencia
+; >> Funciones de pertenencia <<
 
 (define (checkBoard board)
   (if (= (length board) 4)
@@ -88,33 +85,90 @@
                (list? (caddr board))
                (integer? (cadddr board)))
           #t
-          #f)
-      #f)
+          #f
+          )
+      #f
+      )
   )
 
+; >> Selectores <<
 
-; >> Selectores
+; Función: getDimensiones
+; Dom: Board
+; Rec: Par
+(define (getDimensiones board)
+  (cons (car board) (cadr board))
+  )
 
+; Función: getContenedor
+; Dom: Board
+; Rec: lista
+(define (getContenedor board)
+  (caddr board)
+  )
 
-; >> Modificadores
+; Función: getPuntaje
+; Dom: Board
+; Rec: Entero
+(define (getPuntaje board)
+  (cadddr board)
+  )
+
+; Función: getLineaHorizontal
+; Dom: Board X Entero
+; Rec: Lista
+(define (getLineaHorizontal board numLinea)
+
+  ; Función: getLineaAux
+  ; Dom: Lista X Entero X Entero
+  ; Rec: Lista
+  (define (getLineaAux contenedor ancho numLinea)
+    (if (= numLinea 0)
+        (carRepetido contenedor ancho '())
+        (getLineaAux (cdrRepetido contenedor ancho) ancho (- numLinea 1))
+        )
+    )
+
+  ; Función: carRepetido
+  ; Dom: Lista X Entero X Lista
+  ; Rec: Lista
+  (define (carRepetido lista veces listaAux)
+    (if (= veces 0)
+        (reverse listaAux)
+        (carRepetido (cdr lista) (- veces 1) (cons (car lista) listaAux))
+        )
+    )
+        
+  ; Función: cdrRepetido
+  ; Dom: Lista
+  ; Rec: Lista
+  (define (cdrRepetido lista veces)
+    (if (= veces 0)
+        lista
+        (cdrRepetido (cdr lista) (- veces 1))
+        )
+    )
+  
+  (getLineaAux (getContenedor board) (car (getDimensiones board)) (- numLinea 1))
+  )
+
+; >> Modificadores <<
 
 ; Función: play
 ; Dom: Board X Entero X Pieza
 ; Rec: Board
 (define (play board posHoriz piece)
-  "NULL"
+  "No implementada aun"
   )
 
+; >> Operadores <<
 
-; >> Operadores
-
-; Función: play
-; Dom: Board X Entero X Pieza
-; Rec: Board
+; Función: checkHorizontalLines
+; Dom: Board
+; Rec: Lista
 (define (checkHorizontalLines board)
-  "NULL"
+  "No implementada aun"
   )
-
 
 ; Función: nextPiece
 ; Dom: Board X Entero
@@ -124,6 +178,13 @@
     (crearPieza (+ (getRandom semilla maximo) 1))
     )
   (siguienteAux seed 5)
+  )
+
+; Función: board->string
+; Dom: Board
+; Rec: String
+(define (board->string board)
+  "No implementada aun"
   )
 
 #| · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · |#
@@ -139,7 +200,7 @@
 ;                                         #
 ;
 
-; >> Constructor
+; >> Constructor <<
 
 ; Función: crearPieza
 ; Dom: Número
@@ -157,8 +218,7 @@
       )
   )
 
-
-; >> Funciones de pertenencia
+; >> Funciones de pertenencia <<
 
 ; Función: esPieza?
 ; Dom: Pieza
@@ -171,8 +231,7 @@
    )
   )
 
-
-; >> Selectores
+; >> Selectores <<
 
 ; Función: quePieza?
 ; Dom: Pieza
@@ -181,7 +240,6 @@
   (caar pieza)
   )
 
-  
 ; Función: rotaciones?
 ; Dom: Pieza
 ; Rec: Entero
@@ -189,7 +247,6 @@
   (cdar pieza)
   )
 
-  
 ; Función: getPosicion
 ; Dom: Pieza X Entero
 ; Rec: Par
@@ -203,7 +260,7 @@
   (getPosAux pieza numero 0)
   )
 
-; >> Modificadores
+; >> Modificadores <<
 
 ; Función: rotarPieza
 ; Dom: Pieza
@@ -264,12 +321,7 @@
   )
 
 
-; >> Operadores
-
-
-
-
-
+; >> Operadores <<
 
 
 #| · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · |#
