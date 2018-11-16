@@ -1,7 +1,4 @@
-#!r6rs
-(import (rnrs lists(6))
-        (rnrs base(6))
-        (rnrs io simple(6)))
+#lang racket
 
 ; Laboratorio 1 paradigmas de programación, fecha de entrega 16 de noviembre.
 
@@ -45,7 +42,7 @@
   ; Dom: Lista X Pieza
   ; Rec: Lista
   (define (colocarPieza listaTablero pieza horizontal)
-    "me teni chato programa y la concchatumarejriuerui"
+    "NULL"
     )
 
   (list N M (crearListaRL (* N M)) 0)
@@ -69,7 +66,7 @@
     (crearAux (* N M) '())
     )
   
-  (list N M (crearListaRC (* N M)) 0)
+  (list N M (crearListaRC N M) 0)
   )
 
 
@@ -78,27 +75,55 @@
 ; Dom: Entero X Entero X Entero X Entero
 ; Rec: Board
 (define (createBoardLazy N M gamePieces seed)
-  "void"
+  "NULL"
   )
 
 
 ; >> Funciones de pertenencia
 
-(define (chechBoard board)
-  "void"
+(define (checkBoard board)
+  (if (= (length board) 4)
+      (if (and (and (integer? (car board)) (>= (car board) 5))
+               (and (integer? (cadr board)) (>= (cadr board) 10))
+               (list? (caddr board))
+               (integer? (cadddr board)))
+          #t
+          #f)
+      #f)
   )
+
 
 ; >> Selectores
 
+
 ; >> Modificadores
 
+; Función: play
+; Dom: Board X Entero X Pieza
+; Rec: Board
 (define (play board posHoriz piece)
-  ("void")
+  "NULL"
   )
 
+
 ; >> Operadores
+
+; Función: play
+; Dom: Board X Entero X Pieza
+; Rec: Board
 (define (checkHorizontalLines board)
-  ("void")
+  "NULL"
+  )
+
+
+; Función: nextPiece
+; Dom: Board X Entero
+; Rec: Pieza
+(define (nextPiece board seed)
+  (define (siguienteAux semilla maximo)
+    (crearPieza (+ (getRandom semilla maximo) 1))
+    )
+  (siguienteAux seed 5)
   )
 
 #| · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · |#
@@ -242,10 +267,16 @@
 ; >> Operadores
 
 
+
+
+
+
+
 #| · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · |#
 
 ; Generador de números aleatorios, obtenido del moodle de la asignatura,
-; modificado para que en vez de usar la función remainder, use la función mod.
+; por temas de uso de listas el programa está en lang racket y funciona remainder,
+; para el caso contrario de usar #!r6rs se puede cambiar por la funcion mod.
 
 ; Estas constantes fueron sacadas de https://en.wikipedia.org/wiki/Linear_congruential_generator
 (define a 1103515245)
@@ -255,7 +286,7 @@
 (define myRandom
   (lambda
       (xn)
-    (mod (+ (* a xn) c) m)
+    (remainder (+ (* a xn) c) m)
     )
   )
 ; Cada vez que pedimos un random, debemos pasar como argumento el random anterior.
@@ -271,7 +302,7 @@
     (if (= 0 cuantos)
         '()
         (let ((xNvo (myRandom xActual)))
-          (cons (mod xNvo maximo)
+          (cons (remainder xNvo maximo)
                 (getListaRandom (- cuantos 1) xNvo maximo)
                 )
           )
@@ -281,6 +312,6 @@
 
 (define getRandom
   (lambda (xActual maximo)
-    (mod (myRandom xActual) maximo)
+    (remainder (myRandom xActual) maximo)
     )
   )
