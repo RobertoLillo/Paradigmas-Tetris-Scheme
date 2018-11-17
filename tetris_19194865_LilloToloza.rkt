@@ -6,9 +6,15 @@
 ;                                       >---- TDA Tablero ----<
 
 ; >> Representación
-;   Una lista de largo N x M, la cual está llena con ceros o unos, cada valor dentro de la lista
+;   Tablero:
+;      Lista de elementos, '(5 10 (1 1 1 1 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0) 0))
+;   Donde los dos primeros números corresponden al ancho y al alto respectivamente, el tercero a un cotenedor y el cuarto al puntaje.
+;
+;   Contenedor:
+;      Una lista de largo N x M, la cual está llena con ceros o unos, cada valor dentro de la lista
 ;   representa una posición del tablero, donde 0 significa que esa posición no está ocupada, mientras
 ;   que 1 indica que la posición si está ocupada.
+
 
 
 ; >> Constructor <<
@@ -76,6 +82,8 @@
   "No implementada aun"
   )
 
+
+
 ; >> Funciones de pertenencia <<
 
 (define (checkBoard board)
@@ -90,6 +98,8 @@
       #f
       )
   )
+
+
 
 ; >> Selectores <<
 
@@ -114,43 +124,39 @@
   (cadddr board)
   )
 
-; Función: getLineaHorizontal
-; Dom: Board X Entero
+; Función: carRepetido
+; Dom: Lista X Entero X Lista
 ; Rec: Lista
-(define (getLineaHorizontal board numLinea)
-
-  ; Función: getLineaAux
-  ; Dom: Lista X Entero X Entero
-  ; Rec: Lista
-  (define (getLineaAux contenedor ancho numLinea)
-    (if (= numLinea 0)
-        (carRepetido contenedor ancho '())
-        (getLineaAux (cdrRepetido contenedor ancho) ancho (- numLinea 1))
-        )
+(define (carRepetido lista veces listaAux)
+  (if (= veces 0)
+    (reverse listaAux)
+    (carRepetido (cdr lista) (- veces 1) (cons (car lista) listaAux))
     )
-
-  ; Función: carRepetido
-  ; Dom: Lista X Entero X Lista
-  ; Rec: Lista
-  (define (carRepetido lista veces listaAux)
-    (if (= veces 0)
-        (reverse listaAux)
-        (carRepetido (cdr lista) (- veces 1) (cons (car lista) listaAux))
-        )
-    )
+)
         
-  ; Función: cdrRepetido
-  ; Dom: Lista
-  ; Rec: Lista
-  (define (cdrRepetido lista veces)
-    (if (= veces 0)
-        lista
-        (cdrRepetido (cdr lista) (- veces 1))
-        )
-    )
-  
-  (getLineaAux (getContenedor board) (car (getDimensiones board)) (- numLinea 1))
+; Función: cdrRepetido
+; Dom: Lista
+; Rec: Lista
+(define (cdrRepetido lista veces)
+  (if (= veces 0)
+      lista
+      (cdrRepetido (cdr lista) (- veces 1))
+      )
   )
+
+
+; Función: getLineaHorizontal
+; Dom: Lista X Entero X Entero
+; Rec: Lista
+(define (getLineaHorizontal contenedor ancho numLinea)
+  (if (= numLinea 0)
+      (carRepetido contenedor ancho '())
+      (getLineaHorizontal (cdrRepetido contenedor ancho) ancho (- numLinea 1))
+      )
+  )
+
+
+
 
 ; >> Modificadores <<
 
@@ -161,36 +167,94 @@
   "No implementada aun"
   )
 
-; >> Operadores <<
 
-; Función: checkHorizontalLines
-; Dom: Board
-; Rec: Lista
-(define (checkHorizontalLines board)
-  "No implementada aun"
-  )
+
+; >> Operadores <<
 
 ; Función: nextPiece
 ; Dom: Board X Entero
 ; Rec: Pieza
 (define (nextPiece board seed)
   (define (siguienteAux semilla maximo)
-    (crearPieza (+ (getRandom semilla maximo) 1))
+    (crearPieza (getRandom semilla maximo))
     )
   (siguienteAux seed 5)
   )
 
+; Función: checkHorizontalLines
+; Dom: Board
+; Rec: Lista
+(define (checkHorizontalLines board)
+
+  ; Función: checkHorAux
+  ; Dom: Lista X Entero
+  ; Rec: String
+  (define (checkHorAux contenedor contador)
+    (if (= contador (cdr (getDimensiones board)))
+        "No hay lineas horizontales llenas"
+        (if (todosIguales? (getLineaHorizontal contenedor (car (getDimensiones board)) contador))
+            (if (= (car (getLineaHorizontal contenedor (car (getDimensiones board)) contador)) 1)
+                (string-append "La linea horizontal número " (number->string (+ contador 1)) " está llena")
+                (checkHorAux contenedor (+ contador 1))
+                )
+            (checkHorAux contenedor (+ contador 1))
+            )
+        )
+    )
+
+  ; Función: todosIguales?
+  ; Dom: Lista
+  ; Rec: Booleano
+  (define (todosIguales? lista)
+    (or
+     (or (null? lista) (null? (cdr lista)))
+     (and (eq? (car lista) (cadr lista)) (todosIguales? (cdr lista)))
+     )
+    )
+
+  (checkHorAux (getContenedor board) 0)
+  )
+  
 ; Función: board->string
 ; Dom: Board
 ; Rec: String
 (define (board->string board)
-  "No implementada aun"
+
+  ; Función: bStringAux
+  ; Dom: Lista X Entero X String
+  ; Rec: String
+  (define (bStringAux contenedor ancho alto contador string)
+    (if (= contador alto)
+        string
+        (bStringAux contenedor ancho alto (+ contador 1) (string-append (juntarStringRecursivo (reverse (getLineaHorizontal contenedor ancho contador)) ancho "") string))
+        )
   )
+
+  ; Función: juntarStringRecursivo
+  ; Dom: Lista X Entero
+  ; Rec: String
+  (define (juntarStringRecursivo lista contador stringSalida)
+    (if (= contador 0)
+        stringSalida
+        (if (= contador (car (getDimensiones board)))
+            (juntarStringRecursivo (cdr lista) (- contador 1) (string-append (number->string (car lista)) "\n"))
+            (juntarStringRecursivo (cdr lista) (- contador 1) (string-append (number->string (car lista)) stringSalida))
+            )
+        )
+    )
+  (bStringAux (getContenedor board) (car (getDimensiones board)) (cdr (getDimensiones board)) 0 "")
+  )
+
+
+
 
 #| · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · |#
 ;                                       >---- TDA Piezas ----<
 
 ; - Representación
+;      Lista de pares '((1 . 0) (0 . 0) (0 . 1) (1 . 0) (2 . 0))
+;   Donde el primer par representa el ID de la pieza y la cantidad de rotaciones.
+;   Los demás pares indican cada posición de cada bloque que compone la pieza.
 ;
 ; Piezas:
 ;
@@ -199,6 +263,8 @@
 ;              ##                         #
 ;                                         #
 ;
+
+
 
 ; >> Constructor <<
 
@@ -231,6 +297,8 @@
    )
   )
 
+
+
 ; >> Selectores <<
 
 ; Función: quePieza?
@@ -259,6 +327,8 @@
     )
   (getPosAux pieza numero 0)
   )
+
+
 
 ; >> Modificadores <<
 
@@ -321,6 +391,7 @@
   )
 
 
+
 ; >> Operadores <<
 
 
@@ -367,3 +438,139 @@
     (remainder (myRandom xActual) maximo)
     )
   )
+
+
+; _____________________________________________________________________________________________
+
+#| EJEMPLOS DE PRUEBA PARA REVISION
+
+FUNCIÓN createBoardRL:
+ - (createBoardRL 5 10 0 0)
+ - (createBoardRL 7 16 11 2018)
+ - (createBoardRL 4 12 4 12)
+
+FUNCIÓN createBoardRC:
+ - (createBoardRC 5 10 0 0)
+ - (createBoardRC 7 16 11 2018)
+ - (createBoardRC 4 12 4 12)
+
+FUNCIÓN createBoardLazy: No implementada
+
+FUNCIÓN checkBoard:
+ - (checkBoard '(5 10 (0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0) 0)
+ - (checkBoard '(7
+  16
+  (0
+   0
+   0
+   0
+   0
+   0
+   0
+   0
+   0
+   0
+   0
+   0
+   0
+   0
+   0
+   0
+   0
+   0
+   0
+   0
+   0
+   0
+   0
+   0
+   0
+   0
+   0
+   0
+   0
+   0
+   0
+   0
+   0
+   0
+   0
+   0
+   0
+   0
+   0
+   0
+   0
+   0
+   0
+   0
+   0
+   0
+   0
+   0
+   0
+   0
+   0
+   0
+   0
+   0
+   0
+   0
+   0
+   0
+   0
+   0
+   0
+   0
+   0
+   0
+   0
+   0
+   0
+   0
+   0
+   0
+   0
+   0
+   0
+   0
+   0
+   0
+   0
+   0
+   0
+   0
+   0
+   0
+   0
+   0
+   0
+   0
+   0
+   0
+   0
+   0
+   0
+   0
+   0
+   0
+   0
+   0
+   0
+   0
+   0
+   0
+0
+0
+0
+0 0 0 0 0 0 0 0 0) 0)
+ - (checkBoard
+
+|#
+
+
+
+
+
+
+
