@@ -1,2 +1,2 @@
-# tetrisScheme
-Lab 1 PDP Scheme (2-2018)
+# Paradigmas-Tetris-Scheme
+Laboratorio 1 Paradigmas de Programación. Scheme. (2-2018).
